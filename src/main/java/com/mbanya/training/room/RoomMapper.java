@@ -21,6 +21,12 @@ public class RoomMapper {
         }
     }
 
+    public static Room updateRoomFromDto(Room room, RoomDto request) {
+        room.setQuality(mapQuality(request.getQuality()));
+        room.setType(mapType(request.getType()));
+        return room;
+    }
+
     public static Type mapType(String type) {
         if (type == null) return null;
         switch (type.toUpperCase()) {

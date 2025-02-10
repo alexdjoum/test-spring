@@ -10,7 +10,9 @@ import com.mbanya.training.room.repositories.RoomRepository;
 import com.mbanya.training.room.repositories.model.Room;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.convert.TypeMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +33,30 @@ public class RoomService {
 
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
+    }
+
+    public void deleteRoom(Long id) {
+        roomRepository.deleteById(id);
+    }
+
+    public Room updateRoom(Long id, RoomDto request) {
+        Optional<Room> existingRoomOpt = roomRepository.findById(id);
+        if (existingRoomOpt.isPresent()) {
+            Room existingRoom = existingRoomOpt.get();
+    
+            // Mettre à jour les champs
+            existingRoom.setName(request.getName());
+            existingRoom.setDescription(request.getDescription());
+            existingRoom.setLocation(request.getLocation());
+            existingRoom.setPrice(request.getPrice());
+    
+            // Utiliser RoomMapper pour convertir Quality et Type
+            Room updatedRoom = RoomMapper.updateRoomFromDto(existingRoom, request);
+    
+            return roomRepository.save(updatedRoom);
+        } else {
+            throw new RuntimeException("Chambre non trouvée avec l'ID : " + id);
+        }
     }
 }
 
