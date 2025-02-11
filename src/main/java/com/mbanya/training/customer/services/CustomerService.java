@@ -23,7 +23,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public Customer saveRoom(CustomerDto request) {
+    public Customer saveCustomer(CustomerDto request) {
         Customer customer = CustomerMapper.toEntity(request);
         return customerRepository.save(customer);
     }
@@ -53,7 +53,7 @@ public class CustomerService {
             existingCustomer.setRegion(request.getRegion());
             existingCustomer.setStreet(request.getStreet());
     
-            // Utiliser RoomMapper pour convertir Quality et Type
+            // Utiliser CustomerMapper pour convertir Gender et Type
             Customer updatedRoom = CustomerMapper.updateRoomFromDto(existingCustomer, request);
     
             return customerRepository.save(updatedRoom);
